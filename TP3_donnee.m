@@ -23,7 +23,7 @@ LieBr = @(f1,f2) simplify(jacobian(f2, [x1 x2 x3 x4])*f1 - jacobian(f1, [x1 x2 x
 LieDer = @(f,v) simplify(jacobian(f, [x1 x2 x3 x4])*v);
 
 % QUESTION 1
-% D�finir les champs de vecteurs f et g
+% Definir les champs de vecteurs f et g
 f = [x2;
      -((M*G*L)/I)*sin(x1) - (1/I)*(k + (x1-x3)^2)*(x1-x3);
      x4;
@@ -39,13 +39,13 @@ g = [0;
 Cbar = [g, LieBr(f, g), LieBr(f, LieBr(f,g))];
 C = [g, LieBr(f, g), LieBr(f, LieBr(f, g)), LieBr(f, LieBr(f, LieBr(f,g)))];
 
-% V�rifier l'accessibilit� (rang de C)
+% Verifier l'accessibilite (rang de C)
 'Acessibility check:'
 
 R = subs(C, [x1 x2 x3 x4 u I J M G L K k], [0 0 0 0 u I J M G L K k]);
 R = rank(C);
 
-% V�rifier l'involutivit� de Cbar
+% Verifier l'involutivite de Cbar
 'Involutivity check:'
 
 Cbar_check = [LieBr(Cbar(:, 1), Cbar(:, 2)), LieBr(Cbar(:, 1), Cbar(:, 3)), ...
@@ -67,12 +67,12 @@ disp('Déterminant: '); disp(d);
 N = null(Cbar');
 
 % QUESTION 4
-% Int�grer omeg "� la main" (facile!)
+% Integrer omeg "a la main" (facile!)
 'Integral of omega:'
 
 h =x1;
 
-% Construire le changement de coordonn�es z = Phi(x)
+% Construire le changement de coordonnees z = Phi(x)
 'Change of coordinates:'
 z1 = h;
 z2 = LieDer(h, f);
@@ -80,7 +80,7 @@ z3 = LieDer(z2, f);
 z4 = LieDer(z3, f);
 z = [z1; z2; z3; z4];
 
-% Gains sur le syst�me lin�aire
+% Gains sur le systeme lineaire
 k = [1 4 6 4];
 v = -k * z;
 
@@ -107,12 +107,12 @@ L=0.3;          %1/2 longueur de l objet en sortie
 G=10;           %gravite terrestre
 k=1;
 
-% Substituer les valeurs num�riques des param�tres dans les expressions
+% Substituer les valeurs numeriques des parametres dans les expressions
 us = subs(u);
 fs = subs(f);
 gs = subs(g);
 
-% Creer une fonction � partir de ces expressions
+% Creer une fonction a partir de ces expressions
 dynamique = matfunc(fs+gs*us,'vars',[x1 x2 x3 x4]); % MATLAB >= R2008b
 %%% dynamique = matfunc(fs+gs*us,'vars',[x1 x2 x3 x4]);     % MATLAB < R2008b
 
@@ -120,11 +120,11 @@ dynamique = matfunc(fs+gs*us,'vars',[x1 x2 x3 x4]); % MATLAB >= R2008b
 x0 = [.1,-.1,.2,0.1];
 tspan=[0 25];
 
-% Simulation num�rique du syst�me boucl�
+% Simulation numerique du systeme boucle
 [t,xx] = ode45(@(t,x) dynamique(x(1),x(2),x(3),x(4)),tspan,x0);
 
 plot(t,xx)
-title('Syst�me boulc�')
+title('Systeme boulce')
 xlabel('t')
 ylabel('x_1(t), x_2(t), x_3(t), x_4(t)')
 
